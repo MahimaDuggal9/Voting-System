@@ -1,6 +1,6 @@
-package com.Genpact.Emp_System.repository;
+package com.Genpact.Vote_System.repository;
 
-import com.Genpact.Emp_System.entity.Candidate;
+import com.Genpact.Vote_System.entity.Candidate;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

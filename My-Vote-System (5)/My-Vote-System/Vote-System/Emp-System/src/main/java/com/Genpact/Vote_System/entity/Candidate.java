@@ -1,4 +1,4 @@
-package com.Genpact.Emp_System.entity;
+package com.Genpact.Vote_System.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

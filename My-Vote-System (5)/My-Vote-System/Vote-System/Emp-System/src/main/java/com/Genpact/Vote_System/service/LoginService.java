@@ -1,8 +1,8 @@
-package com.Genpact.Emp_System.service;
+package com.Genpact.Vote_System.service;
 
-import com.Genpact.Emp_System.dto.LoginDto;
-import com.Genpact.Emp_System.entity.User;
-import com.Genpact.Emp_System.repository.UserRepository;
+import com.Genpact.Vote_System.dto.LoginDto;
+import com.Genpact.Vote_System.entity.User;
+import com.Genpact.Vote_System.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

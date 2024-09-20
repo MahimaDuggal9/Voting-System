@@ -1,9 +1,9 @@
-package com.Genpact.Emp_System.service;
+package com.Genpact.Vote_System.service;
 
-import com.Genpact.Emp_System.entity.Candidate;
-import com.Genpact.Emp_System.entity.User; // Assuming you have a User entity
-import com.Genpact.Emp_System.repository.CandidateRepository;
-import com.Genpact.Emp_System.repository.UserRepository; // Assuming you have a User repository
+import com.Genpact.Vote_System.entity.Candidate;
+import com.Genpact.Vote_System.entity.User; // Assuming you have a User entity
+import com.Genpact.Vote_System.repository.CandidateRepository;
+import com.Genpact.Vote_System.repository.UserRepository; // Assuming you have a User repository
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

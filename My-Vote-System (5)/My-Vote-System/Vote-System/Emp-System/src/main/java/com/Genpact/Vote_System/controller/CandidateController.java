@@ -1,7 +1,7 @@
-package com.Genpact.Emp_System.controller;
+package com.Genpact.Vote_System.controller;
 
-import com.Genpact.Emp_System.entity.Candidate;
-import com.Genpact.Emp_System.service.CandidateService;
+import com.Genpact.Vote_System.entity.Candidate;
+import com.Genpact.Vote_System.service.CandidateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

@@ -1,4 +1,4 @@
-package com.Genpact.Emp_System.controller;
+package com.Genpact.Vote_System.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import com.Genpact.Emp_System.dto.UserRegisterDto;
-import com.Genpact.Emp_System.service.UserService;
+import com.Genpact.Vote_System.dto.UserRegisterDto;
+import com.Genpact.Vote_System.service.UserService;
 
 import javax.validation.Valid;
 import org.slf4j.Logger;

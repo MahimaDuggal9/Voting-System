@@ -1,7 +1,7 @@
-package com.Genpact.Emp_System.controller;
+package com.Genpact.Vote_System.controller;
 
-import com.Genpact.Emp_System.dto.LoginDto;
-import com.Genpact.Emp_System.service.LoginService;
+import com.Genpact.Vote_System.dto.LoginDto;
+import com.Genpact.Vote_System.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

@@ -1,4 +1,4 @@
-package com.Genpact.Emp_System.dto;
+package com.Genpact.Vote_System.dto;
 
 public class LoginDto {
     private String aadharNumber;

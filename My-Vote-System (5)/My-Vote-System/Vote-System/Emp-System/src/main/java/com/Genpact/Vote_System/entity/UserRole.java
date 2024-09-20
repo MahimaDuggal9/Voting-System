@@ -1,4 +1,4 @@
-package com.Genpact.Emp_System.entity;
+package com.Genpact.Vote_System.entity;
 
 public enum UserRole {
     USER, ADMIN;

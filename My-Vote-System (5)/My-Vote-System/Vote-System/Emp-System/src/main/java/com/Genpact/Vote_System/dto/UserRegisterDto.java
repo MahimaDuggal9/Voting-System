@@ -1,7 +1,7 @@
-package com.Genpact.Emp_System.dto;
+package com.Genpact.Vote_System.dto;
 
 
-import com.Genpact.Emp_System.entity.UserRole;
+import com.Genpact.Vote_System.entity.UserRole;
 
 import javax.validation.constraints.NotEmpty;
 

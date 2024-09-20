@@ -1,9 +1,9 @@
-package com.Genpact.Emp_System.service;
+package com.Genpact.Vote_System.service;
 
-import com.Genpact.Emp_System.dto.UserRegisterDto;
-import com.Genpact.Emp_System.entity.User;
-import com.Genpact.Emp_System.entity.UserRole;
-import com.Genpact.Emp_System.repository.UserRepository;
+import com.Genpact.Vote_System.dto.UserRegisterDto;
+import com.Genpact.Vote_System.entity.User;
+import com.Genpact.Vote_System.entity.UserRole;
+import com.Genpact.Vote_System.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

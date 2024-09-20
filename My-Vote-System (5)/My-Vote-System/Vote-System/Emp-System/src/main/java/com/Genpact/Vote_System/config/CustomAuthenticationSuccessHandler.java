@@ -1,7 +1,5 @@
-package com.Genpact.Emp_System.config;
+package com.Genpact.Vote_System.config;
 
-import com.Genpact.Emp_System.service.UserService;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
