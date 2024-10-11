@@ -1,22 +1,29 @@
 package com.Genpact.Vote_System.controller;
 
+import com.Genpact.Vote_System.entity.Candidate;
+import com.Genpact.Vote_System.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import com.Genpact.Vote_System.dto.UserRegisterDto;
 import com.Genpact.Vote_System.service.UserService;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.security.Principal;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.List;
 
 @Controller
 @RequestMapping("/registration")
@@ -43,31 +50,23 @@ public class UserRegistrationController {
             return "registration";
         }
 
-        if (!isAgeValid(registrationDto.getDateOfBirth())) {
-            result.rejectValue("dateOfBirth", "error.user", "You must be at least 18 years old to register.");
-            return "registration";
-        }
-
         try {
             userService.save(registrationDto);
+        } catch (DataIntegrityViolationException e) {
+            if (e.getMessage().contains("Duplicate entry") && e.getMessage().contains("phone_number")) {
+                logger.warn("Duplicate phone number attempt: " + registrationDto.getPhoneNumber());
+                result.rejectValue("phoneNumber", "error.user", "Phone number must be unique. Please enter a different one.");
+            } else if (e.getMessage().contains("Duplicate entry") && e.getMessage().contains("aadhar_number")) {
+                logger.warn("Duplicate Aadhaar number attempt: " + registrationDto.getAadharNumber());
+                result.rejectValue("aadharNumber", "error.user", "Aadhaar number must be unique. Please enter a different one.");
+            }
+            return "registration"; // Return to the registration page with the error
         } catch (Exception e) {
             logger.error("Error registering user", e);
-            return "error";
+            return "error"; // Handle other errors appropriately
         }
 
-        return "redirect:/login";
+        return "redirect:/login"; // Redirect to login page if registration is successful
     }
 
-    private boolean isAgeValid(String dateOfBirth) {
-        if (dateOfBirth == null || dateOfBirth.isEmpty()) return false;
-
-        try {
-            LocalDate dob = LocalDate.parse(dateOfBirth, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-            LocalDate today = LocalDate.now();
-            int age = Period.between(dob, today).getYears();
-            return age >= 18;
-        } catch (DateTimeParseException e) {
-            return false; // Invalid date format
-        }
-    }
 }

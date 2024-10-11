@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Profile Page</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css">
+  <style>
+    body {
+        background-image: url('https://cdn.wbcomdesigns.com/wp-content/uploads/2024/05/freepik-export-20240508062010JFGm-768x421.jpeg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+    }
+    .profile-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        text-align: center;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .profile-section {
+        margin-top: 20px;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.6);
+        width: 100%;
+        max-width: 600px;
+    }
+    .profile-section h2 {
+        margin-bottom: 20px;
+        color: #333;
+    }
+    .profile-section p {
+        margin: 10px 0;
+        font-size: 1.1em;
+        color: #555;
+    }
+    .profile-section p strong {
+        color: #000;
+    }
+    .vote-section {
+        margin-top: 30px;
+    }
+
+  </style>
+</head>
+<body>
+<div class="profile-container">
+  <h1>User Profile</h1>
+  <div th:if="${user != null}" class="profile-section">
+    <h2>Profile Details</h2>
+    <p><strong>Aadhaar Number:</strong> <span th:text="${user.aadharNumber}"></span></p>
+    <p><strong>First Name:</strong> <span th:text="${user.firstName}"></span></p>
+    <p><strong>Last Name:</strong> <span th:text="${user.lastName}"></span></p>
+    <p><strong>Phone Number:</strong> <span th:text="${user.phoneNumber}"></span></p>
+    <p><strong>Date of Birth:</strong> <span th:text="${user.dateOfBirth}"></span></p>
+    <p><strong>Nationality:</strong> <span th:text="${user.nationality}"></span></p>
+    <p><strong>Role:</strong> <span th:text="${user.role}"></span></p>
+    <p><strong>Vote Count:</strong> <span th:text="${user.votecount}"></span></p> <!-- Display the votecount -->
+
+
+  </div>
+  <div th:if="${user == null}">
+    <p>Please log in to view your profile.</p>
+  </div>
+</div>
+
+<script>
+  function voteForCandidate(userId) {
+    // Call the backend vote API when the vote button is clicked
+    fetch(`/vote/${userId}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: `userId=${userId}`,
+    })
+    .then(response => response.text())
+    .then(message => {
+      alert(message); // Show success or error message
+      location.reload(); // Reload the page to update votecount
+    })
+    .catch(error => console.error('Error:', error));
+  }
+</script>
+</body>
+</html>

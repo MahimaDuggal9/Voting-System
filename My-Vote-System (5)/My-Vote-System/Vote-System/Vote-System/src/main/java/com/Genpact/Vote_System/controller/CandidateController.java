@@ -1,18 +1,36 @@
 package com.Genpact.Vote_System.controller;
 
+import com.Genpact.Vote_System.dto.CandidateDto;
 import com.Genpact.Vote_System.entity.Candidate;
+import com.Genpact.Vote_System.entity.User;
 import com.Genpact.Vote_System.service.CandidateService;
+import com.Genpact.Vote_System.service.UserService;
+import com.Genpact.Vote_System.service.UserServiceImpl;
+import com.Genpact.Vote_System.service.VotingService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
+import java.security.Principal;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.Comparator;
 import java.util.List;
+
+
 
 @Controller
 @RequestMapping("/candidates")
@@ -21,28 +39,11 @@ public class CandidateController {
     @Autowired
     private CandidateService candidateService;
 
-    @PostMapping("/addCandidate")
-    public String addCandidate(@RequestParam String fullName,
-                               @RequestParam String dateOfBirth,
-                               @RequestParam String nationality,
-                               @RequestParam String partyName,
-                               @RequestParam String partyLogo) {
-        Candidate candidate = new Candidate();
-        candidate.setFullName(fullName);
+    @Autowired
+    private VotingService votingService;
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate localDateOfBirth = LocalDate.parse(dateOfBirth, formatter);
-        candidate.setDateOfBirth(localDateOfBirth);
-
-        candidate.setNationality(nationality);
-        candidate.setPartyName(partyName);
-        candidate.setPartyLogo(partyLogo);
-        candidate.setNumberOfVotes(0);
-
-        candidateService.saveCandidate(candidate);
-
-        return "redirect:/candidates/index";
-    }
+    @Autowired
+    private UserService userService;
 
     @GetMapping("/addcandidate")
     public String addCandidateForm(Model model) {
@@ -51,78 +52,143 @@ public class CandidateController {
     }
 
     @PostMapping("/addcandidate")
-    public String registerCandidate(@ModelAttribute Candidate candidate, RedirectAttributes redirectAttributes) {
-        LocalDate today = LocalDate.now();
-        LocalDate birthDate = candidate.getDateOfBirth();
+    public String registerCandidate(@RequestParam String fullName,
+                                    @RequestParam String dateOfBirth,
+                                    @RequestParam String nationality,
+                                    @RequestParam String partyName,
+                                    @RequestParam String partyLogo,
+                                    RedirectAttributes redirectAttributes) {
 
-        if (birthDate == null) {
-            redirectAttributes.addFlashAttribute("error", "Birthdate is required.");
+        LocalDate localDateOfBirth;
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            localDateOfBirth = LocalDate.parse(dateOfBirth, formatter);
+        } catch (DateTimeParseException e) {
+            redirectAttributes.addFlashAttribute("error", "Invalid Date of Birth format.");
             return "redirect:/candidates/addcandidate";
         }
 
-        int age = Period.between(birthDate, today).getYears();
+        Candidate candidate = new Candidate();
+        candidate.setFullName(fullName);
+        candidate.setDateOfBirth(localDateOfBirth);
+        candidate.setNationality(nationality);
+        candidate.setPartyName(partyName);
+        candidate.setPartyLogo(partyLogo);
+        candidate.setNumberOfVotes(0);
 
-        if (birthDate.isAfter(today)) {
-            redirectAttributes.addFlashAttribute("error", "Birthdate cannot be in the future.");
-            return "redirect:/candidates/addcandidate";
-        }
-
-        if (age < 35) {
-            redirectAttributes.addFlashAttribute("error", "Candidate must be at least 35 years old.");
-            return "redirect:/candidates/addcandidate";
-        }
-
-        candidateService.addCandidate(candidate);
+        candidateService.saveCandidate(candidate);
         redirectAttributes.addFlashAttribute("message", "Candidate registered successfully.");
-        return "redirect:/candidates/adminpage";
+        return "redirect:/candidates/index"; // Redirect to index page
     }
+
 
     @GetMapping("/adminpage")
     public String getCandidates(Model model) {
         List<Candidate> candidates = candidateService.getAllCandidates();
+        Long totalVotes = candidateService.getTotalVotes();
+        candidates.sort(Comparator.comparing(Candidate::getFullName));
         model.addAttribute("candidates", candidates);
+        model.addAttribute("totalVotes", totalVotes);
         return "adminpage";
     }
 
     @GetMapping("/index")
     public String getCandidatesForIndex(Model model) {
         List<Candidate> candidates = candidateService.getAllCandidates();
+        Long totalVotes = candidateService.getTotalVotes();
+        candidates.sort(Comparator.comparing(Candidate::getFullName));
         model.addAttribute("candidates", candidates);
+        model.addAttribute("totalVotes", totalVotes);
         return "index";
     }
 
-    @GetMapping("/confirmVote/{id}")
-    public String confirmVoteForm(@PathVariable("id") Long candidateId, Model model) {
-        model.addAttribute("candidateId", candidateId);
-        return "confirm_vote";
-    }
 
     @GetMapping("/delete/{id}")
     public String deleteCandidates(@PathVariable("id") Long candidateId, HttpSession session) {
-        candidateService.deleteCandidate(candidateId);
-        session.setAttribute("msg", "Candidate deleted successfully!");
-        return "redirect:/candidates/adminpage";
-    }
-
-    @GetMapping("/candidates/vote/{id}")
-    public String voteForCandidate(@PathVariable Long id) {
-        candidateService.incrementVoteCount(id);
-        return "redirect:/candidates/index";
-    }
-
-    @GetMapping("/editcandidate/{id}")
-    public String editCandidateForm(@PathVariable("id") Long candidateId, Model model) {
+        // Fetch the candidate to check their vote count
         Candidate candidate = candidateService.getCandidateById(candidateId);
-        model.addAttribute("candidate", candidate);
-        return "edit_candidate";
-    }
 
-    @PostMapping("/updatecandidate")
-    public String updateCandidate(@ModelAttribute Candidate candidate) {
-        Long id = candidate.getId();
-        candidateService.updateCandidate(id, candidate);
+        // Calculate the total votes
+        Long totalVotes = candidateService.getTotalVotes();
+
+        // Check if the candidate's vote count is less than half of the total votes
+        if (candidate.getNumberOfVotes() < (totalVotes / 2)) {
+            candidateService.deleteCandidate(candidateId);
+            session.setAttribute("msg", "Candidate deleted successfully!");
+        } else {
+            session.setAttribute("msg", "Cannot delete candidate as they have received more than half of the total votes.");
+        }
+
         return "redirect:/candidates/adminpage";
     }
+
+
+
+    @PostMapping("/vote/{id}")
+    public String voteForCandidates(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        try {
+            // Get the currently authenticated user's Aadhaar number
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String aadharNumber = authentication.getName(); // Assuming Aadhaar number is stored as username
+
+            // Fetch the user by Aadhaar number
+            User user = userService.findByAadharNumber(aadharNumber);
+            if (user.getVotecount() >= 1) {
+                redirectAttributes.addFlashAttribute("message", "You have already voted.");
+                return "redirect:/candidates/index"; // Redirect to the index page
+            }
+            // Vote for the candidate
+            candidateService.voteForCandidate(id);
+
+            // Increment the user's vote count
+            userService.incrementVoteCount(user.getId()); // Add this method in UserService
+
+            // Fetch the candidate to pass along with the message
+            Candidate candidate = candidateService.getCandidateById(id);
+
+            // Add flash attributes to redirect
+            redirectAttributes.addFlashAttribute("candidate", candidate);
+            redirectAttributes.addFlashAttribute("user", user); // Add user details
+            redirectAttributes.addFlashAttribute("message", "Vote recorded successfully");
+
+            // Redirect to candidates index page
+            return "redirect:/candidates/success";
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "An error occurred while recording your vote.");
+            return "redirect:/error"; // Redirect to a generic error page
+        }
+    }
+
+
+
+    @GetMapping("/success")
+    public String voteSuccess(Model model, HttpServletRequest request) {
+        // Get the candidate object from the model
+
+
+        // Return the Thymeleaf template
+        return "success";  // Name of the Thymeleaf template (success.html)
+    }
+
+
+    @GetMapping("/edit/{id}")
+    public String showEditPage(@PathVariable("id") long id, Model model) {
+        Candidate candidate = candidateService.findById(id);
+        model.addAttribute("candidate", candidate);
+        return "editcandidate";
+    }
+
+    @PostMapping("/update")
+    public String updateCandidate(@ModelAttribute @Valid Candidate candidate, BindingResult result) {
+        if (result.hasErrors()) {
+            return "editcandidate";
+        }
+        candidateService.updateCandidate(candidate);
+        return "redirect:/candidates/adminpage";
+    }
+
+
+
 
 
 }

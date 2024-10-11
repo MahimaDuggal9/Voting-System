@@ -1,6 +1,8 @@
 package com.Genpact.Vote_System.entity;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -8,11 +10,10 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String firstName;
     private String lastName;
     private String password;
-
+    @Column(unique = true, nullable = false)
     private String aadharNumber;
     private String phoneNumber;
     private String nationality;
@@ -21,16 +22,26 @@ public class User {
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
-    @Column(name = "has_voted", nullable = false)
-    private boolean hasVoted = false;
+    @Column(name = "votecount")
+    private int votecount;
+
+    @ElementCollection
+    private Set<Long> votedCandidateIds = new HashSet<>();
 
     public User() {
         this.role = UserRole.USER;
-        this.hasVoted = false;
+        this.votecount = 0;
+    }
+
+    public void incrementVoteCount() {
+        this.votecount++;
+    }
+
+    public Set<Long> getVotedCandidateIds() {
+        return votedCandidateIds;
     }
 
     // Getters and Setters
-
     public Long getId() {
         return id;
     }
@@ -103,11 +114,29 @@ public class User {
         this.role = role;
     }
 
-    public boolean isHasVoted() {
-        return hasVoted;
+    public int getVotecount() {
+        return votecount;
     }
 
-    public void setHasVoted(boolean hasVoted) {
-        this.hasVoted = hasVoted;
+    public void setVotecount(int votecount) {
+        this.votecount = votecount;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", password='" + password + '\'' +
+                ", aadharNumber='" + aadharNumber + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", nationality='" + nationality + '\'' +
+                ", dateOfBirth='" + dateOfBirth + '\'' +
+                ", role=" + role +
+                ", votecount=" + votecount +
+                ", votedCandidateIds=" + votedCandidateIds +
+                '}';
+    }
+
 }

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8">
+  <title>Vote Success</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <style>
+    html, body {
+        height: 100%;
+        margin: 0;
+    }
+
+    body {
+        background-image: url('https://img.freepik.com/premium-photo/3d-charactors_1197721-75392.jpg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        color: black;
+        text-align: center;
+        font-family: Arial, sans-serif;
+        padding: 50px;
+    }
+
+    .container {
+        background-color: rgba(255, 255, 255, 0.2);
+        padding: 2rem;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    img {
+        border-radius: 8px;
+        margin-top: 10px;
+    }
+
+
+  </style>
+</head>
+<body>
+<div class="container mt-5">
+  <h1>Vote Cast Successfully!</h1>
+  <h2>Candidate Details:</h2>
+  <p><strong>Name:</strong> <span th:text="${candidate.fullName}"></span></p>
+  <p><strong>Party:</strong> <span th:text="${candidate.partyName}"></span></p>
+  <p><strong>Party Logo:</strong> <img th:src="@{${candidate.partyLogo}}" alt="Party Logo" style="width: 100px;"></p>
+  <p><strong>Total Votes:</strong> <span th:text="${candidate.numberOfVotes}"></span></p>
+
+  <h2>Vote Details:</h2>
+  <p><strong>User ID:</strong> <span th:if="${user != null}" th:text="${user.id}"></span></p>
+
+  <p><strong>Voted for Candidate ID:</strong> <span th:text="${candidate.fullName}"></span></p>
+
+  <h1>Thank You For Your Vote</h1>
+  <a class="btn btn-secondary" href="/candidates/index">Back to Candidates list</a>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>

@@ -1,12 +1,11 @@
 package com.Genpact.Vote_System.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import org.springframework.format.annotation.DateTimeFormat;
-
 import java.time.LocalDate;
+
 @Entity
 public class Candidate {
 
@@ -14,13 +13,20 @@ public class Candidate {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull(message = "Full name is required")
+    @Size(min = 2, message = "Full name must be at least 2 characters")
     private String fullName;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-
+    @NotNull(message = "Date of birth is required")
     private LocalDate dateOfBirth;
+
+    @NotNull(message = "Nationality is required")
     private String nationality;
+
+    @NotNull(message = "Party name is required")
     private String partyName;
+
     private String partyLogo;
     private int numberOfVotes;
 
@@ -35,6 +41,7 @@ public class Candidate {
         this.numberOfVotes = 0;
     }
 
+    // Getters and Setters
     public Long getId() {
         return id;
     }
@@ -89,12 +96,5 @@ public class Candidate {
 
     public void setNumberOfVotes(int numberOfVotes) {
         this.numberOfVotes = numberOfVotes;
-    }
-
-    @Override
-    public String toString() {
-        return "Candidate [id=" + id + ", fullName=" + fullName + ", dateOfBirth=" + dateOfBirth + ", nationality="
-                + nationality + ", partyName=" + partyName + ", partyLogo=" + partyLogo + ", numberOfVotes="
-                + numberOfVotes + "]";
     }
 }

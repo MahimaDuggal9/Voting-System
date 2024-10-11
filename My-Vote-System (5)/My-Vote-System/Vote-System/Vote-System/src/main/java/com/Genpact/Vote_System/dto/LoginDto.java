@@ -10,6 +10,7 @@ public class LoginDto {
     }
 
     public void setAadharNumber(String aadharNumber) {
+
         this.aadharNumber = aadharNumber;
     }
 
@@ -18,6 +19,7 @@ public class LoginDto {
     }
 
     public void setPassword(String password) {
+
         this.password = password;
     }
 
@@ -26,6 +28,7 @@ public class LoginDto {
     }
 
     public void setRole(String role) {
+
         this.role = role;
     }
 }

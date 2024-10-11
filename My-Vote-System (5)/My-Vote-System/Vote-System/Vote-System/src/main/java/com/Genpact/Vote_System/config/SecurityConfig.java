@@ -33,9 +33,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
+                .antMatchers("/login", "/registration", "/candidates/success", "/success", "/main",
+                        "/updatecandidate", "/getcandidates", "/vote/**", "/candidates/vote/**",
+                        "/candidates/edit/**","/candidates/update","/error","/candidates", "/candidates/update", "/edit","/profile/**","/users","/candidates/vote/{id}","/api/vote/**","/candidates/vote/**").permitAll()
+
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/user/**").hasRole("USER")
-                .antMatchers("/login", "/registration", "/main", "/updatecandidate", "/editcandidate/**").permitAll()
+
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
@@ -56,4 +60,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public AuthenticationSuccessHandler customAuthenticationSuccessHandler() {
         return new CustomAuthenticationSuccessHandler();
     }
+
 }

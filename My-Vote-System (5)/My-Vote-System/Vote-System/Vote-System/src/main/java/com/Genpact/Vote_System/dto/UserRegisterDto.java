@@ -6,6 +6,7 @@ import com.Genpact.Vote_System.entity.UserRole;
 import javax.validation.constraints.NotEmpty;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 public class UserRegisterDto {
     @NotEmpty
@@ -18,9 +19,11 @@ public class UserRegisterDto {
     private String password;
 
     @NotEmpty
+    @Pattern(regexp = "^[0-9]{12}$", message = "Aadhaar number must be exactly 12 digits")
     private String aadharNumber;
 
     @NotEmpty
+    @Pattern(regexp = "^[0-9]{10}$", message = "Phone number must be exactly 12 digits")
     private String phoneNumber;
 
     @NotEmpty
@@ -30,10 +33,14 @@ public class UserRegisterDto {
     private String dateOfBirth;
 
     @NotNull
-    private UserRole role; // Using enum instead of string
+    private UserRole role;
+
+
 
     public UserRegisterDto() {
     }
+
+
 
     public UserRegisterDto(String firstName, String lastName, String password, String aadharNumber, String phoneNumber, String nationality, String dateOfBirth, UserRole role) {
         this.firstName = firstName;
@@ -44,6 +51,7 @@ public class UserRegisterDto {
         this.nationality = nationality;
         this.dateOfBirth = dateOfBirth;
         this.role = role;
+
     }
 
 
@@ -111,4 +119,6 @@ public class UserRegisterDto {
     public void setRole(UserRole role) {
         this.role = role;
     }
+
+
 }

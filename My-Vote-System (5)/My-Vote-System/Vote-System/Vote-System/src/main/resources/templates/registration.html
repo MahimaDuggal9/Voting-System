@@ -3,13 +3,13 @@
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
     <meta charset="ISO-8859-1">
-    <title>Registration and Login</title>
+    <title>Registration</title>
     <link rel="stylesheet"
           href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 </head>
 <style>
     body {
-        background-image: url('https://kevdees.com/wp-content/uploads/2022/02/lpbydenbqqg.jpg');
+        background-image: url('https://img.freepik.com/premium-photo/man-with-laptop-social-media-icons_905829-13753.jpg');
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
@@ -21,59 +21,69 @@
         padding: 10px;
         border-radius: 10px;
     }
-     .navbar {
-            background-color: transparent;
-            box-shadow: none;
-        }
+    .navbar {
+        background-color: transparent;
+        box-shadow: none;
+       color:black;
+    }
 
 </style>
 <body>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#" style="color: black; font-size:25px;">FlexVote.</a>
+        </div>
+        <ul class="nav navbar-nav">
+            <li><a href="/candidates/index" th:href="@{/main}" style="color: black;  font-size:20px;">Home</a></li>
 
-
+        </ul>
+    </div>
 
 <div class="container">
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
-
             <div th:if="${param.success}">
                 <div class="alert alert-info">You've successfully registered</div>
             </div>
+
             <h1>Registration</h1>
-            <form th:action="@{/registration}" method="post" th:object="${user}">
+            <form onsubmit="return validateForm()" action="#" th:action="@{/registration}" method="post" th:object="${user}">
 
                 <div class="form-group">
                     <label class="control-label" for="firstName">First Name</label>
-                    <input id="firstName" class="form-control" th:field="*{firstName}" required />
+                    <input id="firstName" class="form-control" placeholder="Enter Your First Name"  th:field="*{firstName}" required />
                 </div>
 
                 <div class="form-group">
                     <label class="control-label" for="lastName">Last Name</label>
-                    <input id="lastName" class="form-control" th:field="*{lastName}" required />
+                    <input id="lastName" class="form-control" placeholder="Enter Your Last Name" th:field="*{lastName}" required />
                 </div>
 
                 <div class="form-group">
                     <label class="control-label" for="dateOfBirth">Date of Birth</label>
-                    <input id="dateOfBirth" class="form-control" type="date" th:field="*{dateOfBirth}" required />
+                    <input id="dateOfBirth" class="form-control" placeholder="Enter Your Date Of Birth" type="date" th:field="*{dateOfBirth}" required />
                 </div>
 
                 <div class="form-group">
                     <label class="control-label" for="phoneNumber">Phone Number</label>
-                    <input id="phoneNumber" class="form-control" th:field="*{phoneNumber}" required />
+                    <input id="phoneNumber" class="form-control" placeholder="Enter Phone Number" th:field="*{phoneNumber}" required />
                 </div>
 
                 <div class="form-group">
                     <label class="control-label" for="aadharNumber">Aadhar Number</label>
-                    <input id="aadharNumber" class="form-control" th:field="*{aadharNumber}" required />
+                    <input id="aadharNumber" class="form-control" placeholder="Enter Your Aadhar Card Number" th:field="*{aadharNumber}" required />
+                    <span th:if="${#fields.hasErrors('aadharNumber')}" th:errors="*{aadharNumber}"></span>
                 </div>
 
                 <div class="form-group">
                     <label class="control-label" for="password">Password</label>
-                    <input id="password" class="form-control" type="password" th:field="*{password}" required />
+                    <input id="password" class="form-control" placeholder="Enter Password" type="password" th:field="*{password}" required />
                 </div>
 
                 <div class="form-group">
                     <label class="control-label" for="nationality">Nationality</label>
-                    <input id="nationality" class="form-control" th:field="*{nationality}" required />
+                    <input id="nationality" class="form-control" placeholder="Enter Your Nationality" th:field="*{nationality}" required />
                 </div>
 
                 <div class="form-group">
@@ -91,6 +101,55 @@
         </div>
     </div>
 </div>
+
+</nav>
+
+<script>
+    async function validateForm() {
+        const nationality = document.getElementById('nationality').value.trim();
+        const dateOfBirth = document.getElementById('dateOfBirth').value.trim();
+        const phoneNumber = document.getElementById('phoneNumber').value.trim();
+        const aadharNumber = document.getElementById('aadharNumber').value.trim();
+
+        // Check nationality
+        if (nationality.toLowerCase() !== 'indian') {
+            alert("Voter must be an Indian.");
+            return false;
+        }
+
+        // Check birth date
+        const birthDate = new Date(dateOfBirth);
+        const today = new Date();
+        if (birthDate > today) {
+            alert("Birth Date cannot be in the future.");
+            return false;
+        }
+
+        // Calculate age
+        const age = today.getFullYear() - birthDate.getFullYear();
+        const monthDifference = today.getMonth() - birthDate.getMonth();
+        if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
+        }
+
+        if (age < 18) {
+            alert("Voter must be at least 18 years old.");
+            return false;
+        }
+
+        // Validate phone number
+        if (!/^\d{10}$/.test(phoneNumber)) {
+            alert("Phone number must be exactly 10 digits.");
+            return false;
+        }
+
+        // Validate Aadhaar number
+        if (!/^\d{12}$/.test(aadharNumber)) {
+            alert("Aadhaar number must be exactly 12 digits.");
+            return false;
+        }
+    }
+</script>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>

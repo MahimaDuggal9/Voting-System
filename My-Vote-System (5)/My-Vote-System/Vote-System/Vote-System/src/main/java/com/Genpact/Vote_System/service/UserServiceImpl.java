@@ -1,5 +1,6 @@
 package com.Genpact.Vote_System.service;
 
+import com.Genpact.Vote_System.dto.UserProfileDto;
 import com.Genpact.Vote_System.dto.UserRegisterDto;
 import com.Genpact.Vote_System.entity.User;
 import com.Genpact.Vote_System.entity.UserRole;
@@ -17,6 +18,12 @@ import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
+
+    public class ResourceNotFoundException extends RuntimeException {
+        public ResourceNotFoundException(String message) {
+            super(message);
+        }
+    }
 
     @Autowired
     private UserRepository userRepository;
@@ -49,6 +56,7 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(user);
     }
 
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         if (ADMIN_CODE.equals(username)) {
@@ -61,10 +69,9 @@ public class UserServiceImpl implements UserService {
             }
         }
 
-        User user = userRepository.findByAadharNumber(username);
-        if (user == null) {
-            throw new UsernameNotFoundException("User not found with username: " + username);
-        }
+        User user = userRepository.findByAadharNumber(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with Aadhaar number: " + username));
+
 
         List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority(user.getRole().name()));
@@ -72,4 +79,60 @@ public class UserServiceImpl implements UserService {
         return new org.springframework.security.core.userdetails.User(
                 user.getAadharNumber(), user.getPassword(), authorities);
     }
+
+    public void saveUser(User user) {
+        userRepository.save(user);
+    }
+
+
+    public User findById(Long id) {
+        return userRepository.findById(id).orElse(null);
+    }
+
+
+    public void updateProfile(Long userId, UserProfileDto userProfileDto) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
+        user.setFirstName(userProfileDto.getFirstName());
+        user.setLastName(userProfileDto.getLastName());
+        user.setPhoneNumber(userProfileDto.getPhoneNumber());
+
+        userRepository.save(user);
+    }
+
+    @Override
+    public List<User> getAllUsers() {
+        return userRepository.findAll();  // This should return all users from the DB
+    }
+
+    @Override
+    public User findByAadharNumber(String aadharNumber) {
+        return userRepository.findByAadharNumber(aadharNumber)
+                .orElseThrow(() -> new ResourceNotFoundException("User with Aadhaar number " + aadharNumber + " not found"));
+    }
+
+    public void voteForCandidate(Long candidateId, Long userId) {
+        // Find the user who is voting
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        // Increment the user's vote count
+        user.incrementVoteCount();
+
+        // Now, you can save the updated user with the new vote count
+        userRepository.save(user);
+    }
+
+    public void incrementVoteCount(Long userId) {
+        // Fetch the user by ID
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found")); // Handle user not found case
+
+        user.setVotecount(user.getVotecount() + 1); // Increment the vote count
+        userRepository.save(user); // Save the updated user back to the database
+    }
+
+
+
 }

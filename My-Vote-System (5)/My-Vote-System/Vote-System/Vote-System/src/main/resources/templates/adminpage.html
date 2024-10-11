@@ -7,7 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <style>
         body {
-            background-image: url('https://kevdees.com/wp-content/uploads/2022/02/lpbydenbqqg.jpg');
+            background-image: url('https://img.freepik.com/premium-photo/3d-illustration-man-relaxing-home-with-cup-coffee_14117-995991.jpg');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -33,7 +33,7 @@
 
         .form-container {
             padding: 20px;
-            background-color: rgba(255, 255, 255, 0.5); /* Optional: Add background with transparency */
+            background-color: rgba(255, 255, 255, 1);
             border-radius: 8px;
         }
 
@@ -76,20 +76,24 @@
             border-collapse: collapse;
            background-color: rgba(255, 255, 255, 0.5);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
         }
 
         .transparent-table th, .transparent-table td {
             padding: 10px;
             text-align: left;
             background-color: transparent !important;
+
         }
 
         .transparent-table th {
             border-bottom: 2px solid #0056b3;
+            font-weight: 600;
         }
 
         .transparent-table td {
             border-bottom: 1px solid #dee2e6;
+            font-weight: 600;
         }
 
         .btn-group {
@@ -110,26 +114,39 @@
                 padding: 8px;
             }
         }
+
+
     </style>
 </head>
 <body>
-
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">Voting System</a>
+        <a class="navbar-brand" href="#">FlexVote.</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link" href="/main">Main</a>
+                    <a class="nav-link" href="/main">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="/candidates/index">Home</a>
+                    <a class="nav-link" aria-current="page" href="/candidates/index">Voting Page</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/candidates/addcandidate">Add Candidate</a>
+                </li>
+
+            </ul>
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link btn-custom btn-login" href="/login">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link btn-custom btn-register" href="/registration">Register</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link btn-custom btn-profile" href="/profile">Profile</a>
                 </li>
             </ul>
         </div>
@@ -140,8 +157,8 @@
     <div>
         <h5 class="text-center text-success" th:text="${#httpServletRequest.getSession().getAttribute('msg')}"></h5>
     </div>
-    <h1>List of Candidates</h1>
-
+    <h1>Admin Page</h1>
+    <h5>Total Number of Votes: <span th:text="${totalVotes}"></span></h5>
 
     <table class="table transparent-table">
         <thead>
@@ -164,7 +181,7 @@
             <td th:text="${candidate.numberOfVotes}"></td>
             <td>
                 <div class="btn-group">
-                    <a th:href="@{/candidates/editcandidate/{id}(id=${candidate.id})}" class="btn btn-warning btn-custom">Edit</a>
+                    <a th:href="@{/candidates/edit/{id}(id=${candidate.id})}" class="btn btn-warning">Edit</a>
                     <a th:href="@{/candidates/delete/{id}(id=${candidate.id})}" class="btn btn-danger btn-custom">Delete</a>
                 </div>
             </td>
