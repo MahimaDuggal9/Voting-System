@@ -68,12 +68,16 @@
                 <div class="form-group">
                     <label class="control-label" for="phoneNumber">Phone Number</label>
                     <input id="phoneNumber" class="form-control" placeholder="Enter Phone Number" th:field="*{phoneNumber}" required />
+                    <div th:if="${#fields.hasErrors('phoneNumber')}" style="color:red;">
+                        <span th:errors="*{phoneNumber}">Error message</span>
+                    </div>
                 </div>
 
                 <div class="form-group">
                     <label class="control-label" for="aadharNumber">Aadhar Number</label>
                     <input id="aadharNumber" class="form-control" placeholder="Enter Your Aadhar Card Number" th:field="*{aadharNumber}" required />
-                    <span th:if="${#fields.hasErrors('aadharNumber')}" th:errors="*{aadharNumber}"></span>
+                    <span th:if="${#fields.hasErrors('aadharNumber')}" th:errors="*{aadharNumber}" style="color:red;"></span>
+
                 </div>
 
                 <div class="form-group">
@@ -111,13 +115,11 @@
         const phoneNumber = document.getElementById('phoneNumber').value.trim();
         const aadharNumber = document.getElementById('aadharNumber').value.trim();
 
-        // Check nationality
         if (nationality.toLowerCase() !== 'indian') {
             alert("Voter must be an Indian.");
             return false;
         }
 
-        // Check birth date
         const birthDate = new Date(dateOfBirth);
         const today = new Date();
         if (birthDate > today) {
@@ -125,7 +127,6 @@
             return false;
         }
 
-        // Calculate age
         const age = today.getFullYear() - birthDate.getFullYear();
         const monthDifference = today.getMonth() - birthDate.getMonth();
         if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < birthDate.getDate())) {
@@ -137,13 +138,11 @@
             return false;
         }
 
-        // Validate phone number
         if (!/^\d{10}$/.test(phoneNumber)) {
             alert("Phone number must be exactly 10 digits.");
             return false;
         }
 
-        // Validate Aadhaar number
         if (!/^\d{12}$/.test(aadharNumber)) {
             alert("Aadhaar number must be exactly 12 digits.");
             return false;

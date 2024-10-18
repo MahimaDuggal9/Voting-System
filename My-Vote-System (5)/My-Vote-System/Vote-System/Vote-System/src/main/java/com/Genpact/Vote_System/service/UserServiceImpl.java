@@ -103,7 +103,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> getAllUsers() {
-        return userRepository.findAll();  // This should return all users from the DB
+        return userRepository.findAll();
     }
 
     @Override
@@ -113,24 +113,24 @@ public class UserServiceImpl implements UserService {
     }
 
     public void voteForCandidate(Long candidateId, Long userId) {
-        // Find the user who is voting
+
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        // Increment the user's vote count
+
         user.incrementVoteCount();
 
-        // Now, you can save the updated user with the new vote count
+
         userRepository.save(user);
     }
 
     public void incrementVoteCount(Long userId) {
-        // Fetch the user by ID
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found")); // Handle user not found case
 
-        user.setVotecount(user.getVotecount() + 1); // Increment the vote count
-        userRepository.save(user); // Save the updated user back to the database
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        user.setVotecount(user.getVotecount() + 1);
+        userRepository.save(user);
     }
 
 

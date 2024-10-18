@@ -246,20 +246,20 @@ Caused by: java.sql.SQLException: Referencing column 'user_id' and referenced co
 2024-10-11 18:58:29.543 DEBUG 11724 --- [main] .c.JpaMetamodelMappingContextFactoryBean : Finished initializing JpaMetamodelMappingContext!
 2024-10-11 18:58:29.588 DEBUG 11724 --- [main] tor$SharedEntityManagerInvocationHandler : Creating new EntityManager for shared EntityManager invocation
 2024-10-11 18:58:29.668 DEBUG 11724 --- [main] tor$SharedEntityManagerInvocationHandler : Creating new EntityManager for shared EntityManager invocation
-2024-10-11 18:58:29.722 DEBUG 11724 --- [main] o.s.d.r.c.s.RepositoryFactorySupport     : Initializing repository instance for com.Genpact.Vote_System.repository.UserRepository…
+2024-10-11 18:58:29.722 DEBUG 11724 --- [main] o.s.d.r.c.s.RepositoryFactorySupport     : Initializing repository instance for repository.com.votingsystem.Vote_System.UserRepository…
 2024-10-11 18:58:29.747 DEBUG 11724 --- [main] tor$SharedEntityManagerInvocationHandler : Creating new EntityManager for shared EntityManager invocation
 2024-10-11 18:58:29.840 DEBUG 11724 --- [main] o.s.d.jpa.repository.query.NamedQuery    : Looking up named query User.findByAadharNumber
 2024-10-11 18:58:29.845 DEBUG 11724 --- [main] o.s.d.jpa.repository.query.NamedQuery    : Did not find named query User.findByAadharNumber
 2024-10-11 18:58:29.849 DEBUG 11724 --- [main] tor$SharedEntityManagerInvocationHandler : Creating new EntityManager for shared EntityManager invocation
-2024-10-11 18:58:29.924 DEBUG 11724 --- [main] o.s.d.r.c.s.RepositoryFactorySupport     : Finished creation of repository instance for com.Genpact.Vote_System.repository.UserRepository.
+2024-10-11 18:58:29.924 DEBUG 11724 --- [main] o.s.d.r.c.s.RepositoryFactorySupport     : Finished creation of repository instance for repository.com.votingsystem.Vote_System.UserRepository.
 2024-10-11 18:58:29.930 DEBUG 11724 --- [main] o.s.b.f.s.DefaultListableBeanFactory     : Creating shared instance of singleton bean 'passwordEncoder'
 2024-10-11 18:58:29.955 DEBUG 11724 --- [main] o.s.b.f.s.DefaultListableBeanFactory     : Creating shared instance of singleton bean 'candidateController'
 2024-10-11 18:58:29.959 DEBUG 11724 --- [main] o.s.b.f.s.DefaultListableBeanFactory     : Creating shared instance of singleton bean 'candidateService'
 2024-10-11 18:58:29.962 DEBUG 11724 --- [main] o.s.b.f.s.DefaultListableBeanFactory     : Creating shared instance of singleton bean 'candidateRepository'
 2024-10-11 18:58:29.966 DEBUG 11724 --- [main] tor$SharedEntityManagerInvocationHandler : Creating new EntityManager for shared EntityManager invocation
-2024-10-11 18:58:29.974 DEBUG 11724 --- [main] o.s.d.r.c.s.RepositoryFactorySupport     : Initializing repository instance for com.Genpact.Vote_System.repository.CandidateRepository…
+2024-10-11 18:58:29.974 DEBUG 11724 --- [main] o.s.d.r.c.s.RepositoryFactorySupport     : Initializing repository instance for repository.com.votingsystem.Vote_System.CandidateRepository…
 2024-10-11 18:58:29.975 DEBUG 11724 --- [main] tor$SharedEntityManagerInvocationHandler : Creating new EntityManager for shared EntityManager invocation
-2024-10-11 18:58:29.990 DEBUG 11724 --- [main] o.s.d.r.c.s.RepositoryFactorySupport     : Finished creation of repository instance for com.Genpact.Vote_System.repository.CandidateRepository.
+2024-10-11 18:58:29.990 DEBUG 11724 --- [main] o.s.d.r.c.s.RepositoryFactorySupport     : Finished creation of repository instance for repository.com.votingsystem.Vote_System.CandidateRepository.
 2024-10-11 18:58:29.993 DEBUG 11724 --- [main] o.s.b.f.s.DefaultListableBeanFactory     : Creating shared instance of singleton bean 'votingService'
 2024-10-11 18:58:29.997 DEBUG 11724 --- [main] o.s.b.f.s.DefaultListableBeanFactory     : Creating shared instance of singleton bean 'loginController'
 2024-10-11 18:58:29.999 DEBUG 11724 --- [main] o.s.b.f.s.DefaultListableBeanFactory     : Creating shared instance of singleton bean 'mainController'

@@ -5,7 +5,7 @@ public class UserProfileDto {
     private String lastName;
     private String phoneNumber;
 
-    // Getters and Setters
+
     public String getFirstName() {
         return firstName;
     }

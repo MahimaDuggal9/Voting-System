@@ -12,7 +12,7 @@ public class CandidateDto {
     private String partyName;
     private String partyLogo;
 
-    // Getters and setters
+
 
     public Long getId() {
         return id;

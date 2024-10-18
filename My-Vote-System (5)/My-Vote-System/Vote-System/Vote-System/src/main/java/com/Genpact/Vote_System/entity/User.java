@@ -41,7 +41,7 @@ public class User {
         return votedCandidateIds;
     }
 
-    // Getters and Setters
+
     public Long getId() {
         return id;
     }

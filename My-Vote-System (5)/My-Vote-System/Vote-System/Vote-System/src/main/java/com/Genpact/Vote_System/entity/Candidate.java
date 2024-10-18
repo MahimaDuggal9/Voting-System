@@ -41,7 +41,7 @@ public class Candidate {
         this.numberOfVotes = 0;
     }
 
-    // Getters and Setters
+
     public Long getId() {
         return id;
     }

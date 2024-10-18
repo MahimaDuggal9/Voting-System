@@ -1,18 +1,13 @@
 package com.Genpact.Vote_System.controller;
 
-import com.Genpact.Vote_System.dto.CandidateDto;
 import com.Genpact.Vote_System.entity.Candidate;
 import com.Genpact.Vote_System.entity.User;
 import com.Genpact.Vote_System.service.CandidateService;
 import com.Genpact.Vote_System.service.UserService;
-import com.Genpact.Vote_System.service.UserServiceImpl;
 import com.Genpact.Vote_System.service.VotingService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -22,9 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.security.Principal;
 import java.time.LocalDate;
-import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Comparator;
@@ -78,7 +71,7 @@ public class CandidateController {
 
         candidateService.saveCandidate(candidate);
         redirectAttributes.addFlashAttribute("message", "Candidate registered successfully.");
-        return "redirect:/candidates/index"; // Redirect to index page
+        return "redirect:/candidates/index";
     }
 
 
@@ -105,13 +98,12 @@ public class CandidateController {
 
     @GetMapping("/delete/{id}")
     public String deleteCandidates(@PathVariable("id") Long candidateId, HttpSession session) {
-        // Fetch the candidate to check their vote count
         Candidate candidate = candidateService.getCandidateById(candidateId);
 
-        // Calculate the total votes
+
         Long totalVotes = candidateService.getTotalVotes();
 
-        // Check if the candidate's vote count is less than half of the total votes
+
         if (candidate.getNumberOfVotes() < (totalVotes / 2)) {
             candidateService.deleteCandidate(candidateId);
             session.setAttribute("msg", "Candidate deleted successfully!");
@@ -127,35 +119,35 @@ public class CandidateController {
     @PostMapping("/vote/{id}")
     public String voteForCandidates(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         try {
-            // Get the currently authenticated user's Aadhaar number
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            String aadharNumber = authentication.getName(); // Assuming Aadhaar number is stored as username
 
-            // Fetch the user by Aadhaar number
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String aadharNumber = authentication.getName();
+
+
             User user = userService.findByAadharNumber(aadharNumber);
             if (user.getVotecount() >= 1) {
                 redirectAttributes.addFlashAttribute("message", "You have already voted.");
                 return "redirect:/candidates/index"; // Redirect to the index page
             }
-            // Vote for the candidate
+
             candidateService.voteForCandidate(id);
 
-            // Increment the user's vote count
-            userService.incrementVoteCount(user.getId()); // Add this method in UserService
 
-            // Fetch the candidate to pass along with the message
+            userService.incrementVoteCount(user.getId());
+
+
             Candidate candidate = candidateService.getCandidateById(id);
 
-            // Add flash attributes to redirect
+
             redirectAttributes.addFlashAttribute("candidate", candidate);
             redirectAttributes.addFlashAttribute("user", user); // Add user details
             redirectAttributes.addFlashAttribute("message", "Vote recorded successfully");
 
-            // Redirect to candidates index page
+
             return "redirect:/candidates/success";
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", "An error occurred while recording your vote.");
-            return "redirect:/error"; // Redirect to a generic error page
+            return "redirect:/error";
         }
     }
 
@@ -163,11 +155,8 @@ public class CandidateController {
 
     @GetMapping("/success")
     public String voteSuccess(Model model, HttpServletRequest request) {
-        // Get the candidate object from the model
 
-
-        // Return the Thymeleaf template
-        return "success";  // Name of the Thymeleaf template (success.html)
+        return "success";
     }
 
 

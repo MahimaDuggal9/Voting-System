@@ -96,37 +96,37 @@
     h2 {
       color: white;
       font-size: 50px;
-      margin-right: 50px; /* Set the desired size for h2 */
+      margin-right: 50px;
     }
 
     h3 {
       color: black;
-      font-size: 40px; /* Set the desired size for h3 */
-      margin-bottom: 20px; /* Add spacing below the heading */
+      font-size: 40px;
+      margin-bottom: 20px;
     }
  h4 {
       color: black;
-      font-size: 50px; /* Set the desired size for h3 */
-      margin-left: 20px; /* Add spacing below the heading */
+      font-size: 50px;
+      margin-left: 20px;
     }
 
     h5 {
       color: black;
       font-size:30px;
-      margin-left: 40px; /* Set the desired size for h5 */
+      margin-left: 40px;
     }
 
     h6 {
       color: white;
-      font-size: 50px; /* Set the desired size for h6 */
+      font-size: 50px;
     }
 
      .about {
       display: flex;
-      flex-direction: column; /* Stack the boxes vertically */
-      justify-content: center; /* Center the boxes */
+      flex-direction: column;
+      justify-content: center;
       margin-top: 20px;
-      align-items: center; /* Align items to the left */
+      align-items: center;
     }
 
 .advantages {
@@ -150,8 +150,6 @@
       font-size:25px;
     }
 
-
-    /* Different images for each box */
     .advantage-box-1 {
    background-image: url('https://www.tab-beim-bundestag.de/img/Veranstaltungen/e-voting-qu.jpg');
        }
@@ -169,25 +167,25 @@
       border: 1px solid black;
       border-radius: 10px;
       padding: 30px;
-      background-color: rgb(255,255,255,0.8); /* Semi-transparent background */
-      margin-bottom: 20px; /* Increased spacing between boxes */
-      text-align: center; /* Align text to the left */
-      opacity: 0; /* Start as invisible */
-      transform: translateY(20px); /* Slightly lower initially */
-      transition: opacity 0.5s ease, transform 0.5s ease, box-shadow 0.3s ease; /* Smooth transition */
+      background-color: rgb(255,255,255,0.8);
+      margin-bottom: 20px;
+      text-align: center;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s ease, transform 0.5s ease, box-shadow 0.3s ease;
       width: 50%;
-      font-size:20px;/* Ensure boxes take full width */
+      font-size:20px;
     }
 
     .advantage-box.show, .about-box.show {
-      opacity: 1; /* Fully visible when shown */
-      transform: translateY(0); /* Move back to original position */
+      opacity: 1;
+      transform: translateY(0);
     }
 
     /* Hover effect */
     .advantage-box:hover, .about-box:hover {
-      transform: scale(1.1); /* Slightly increase size */
-      box-shadow: 0 6px 25px rgba(0, 0, 0, 0.3); /* Add stronger shadow */
+      transform: scale(1.1);
+      box-shadow: 0 6px 25px rgba(0, 0, 0, 0.3);
     }
 
     .hover-underline:hover {
@@ -197,7 +195,7 @@
 </head>
 <body>
 
-<!-- Navigation Bar -->
+
 <nav class="navbar navbar-expand-lg navbar-light">
   <div class="container-fluid">
     <a class="navbar-brand" href="#">
@@ -227,22 +225,19 @@
   </div>
 </nav>
 
-<!-- Main Section with background -->
 <div class="main-container">
   <h2 class="animate__animated animate__fadeInDown">Welcome to FlexVote.</h2>
   <h6 class="animate__animated animate__fadeInDown">Flexible, fast, and secure voting.</h6>
 
   <div>
-    <a href="/registration" class="btn btn-custom btn-login animate__animated animate__fadeIn animate__delay-2s">Get Started</a>
+    <a href="/login" class="btn btn-custom btn-login animate__animated animate__fadeIn animate__delay-2s">Get Started</a>
   </div>
 </div>
 
-<!-- Why Section -->
+
 <div class="why-section">
-  <!-- Left Image -->
 
 
-  <!-- Right Advantages Boxes -->
   <div class="why-right" id="why">
     <h3 class="animate__animated animate__bounce">Why Choose Digital Voting?</h3>
 
@@ -254,14 +249,9 @@
   </div>
 </div>
 
-<!-- About Section -->
+
 <div class="about-section" id="about">
-  <!-- Left Image -->
 
-
-
-
-  <!-- Right Advantages Boxes -->
   <div class="about">
     <h4 class="animate__animated animate__bounce">About Us</h4>
 
@@ -278,11 +268,11 @@
   </div>
 </div>
 
-<!-- Bootstrap and Custom Scripts -->
+
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
 <script>
-  // Intersection Observer for animations
+
   const options = {
     root: null,
     rootMargin: '0px',
@@ -296,20 +286,20 @@
         boxes.forEach((box, index) => {
           setTimeout(() => {
             box.classList.add('show');
-          }, index * 200); // Stagger the animation
+          }, index * 200);
         });
-        observer.unobserve(entry.target); // Stop observing after animation
+        observer.unobserve(entry.target);
       }
     });
   };
 
   const observer = new IntersectionObserver(animateOnScroll, options);
 
-  // Observe the Why section
+
   const whySection = document.querySelector('.why-section');
   observer.observe(whySection);
 
-  // Observe the About section
+
   const aboutSection = document.querySelector('.about-section');
   observer.observe(aboutSection);
 </script>
